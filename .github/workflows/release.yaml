@@ -20,9 +20,9 @@ jobs:
       run: python3 generate-templates.py
 
     - name: Move files to publish directory
-        run: |
-          mkdir -p publish
-          mv templates_v2.json ./publish/
+      run: |
+        mkdir -p publish
+        mv templates_v2.json ./publish/
     
     - name: Release and upload assets
       uses: softprops/action-gh-release@v1
