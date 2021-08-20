@@ -1,0 +1,33 @@
+{
+    "categories": [
+        "Other",
+        "Tools"
+    ],
+    "description": "MySQL 5.7 with gtid",
+    "env": [
+        {
+            "label": "MYSQL_ROOT_PASSWORD",
+            "name": "MYSQL_ROOT_PASSWORD",
+            "description": "password for root",
+            "default": "123321"
+        }
+    ],
+    "image": "win7/mysql-binlog-gtid:5.7",
+    "logo": "https://raw.githubusercontent.com/recall704/portainer_app_templates/main/images/mysql-icon.png",
+    "name": "mysql-gtid-5.7",
+    "platform": "linux",
+    "ports": [
+        "3306"
+    ],
+    "restart_policy": "always",
+    "title": "MySQL-GTID-5.7",
+    "type": 1,
+    "volumes": [
+        {
+            "container": "/var/lib/mysql"
+        },
+        {
+            "container": "/docker-entrypoint-initdb.d"
+        }
+    ]
+}
