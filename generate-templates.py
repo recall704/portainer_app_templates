@@ -2,7 +2,6 @@
 
 import json
 import glob
-import jinja2
 
 d = {
     "version": "2",

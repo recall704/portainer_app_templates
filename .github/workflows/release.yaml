@@ -1,0 +1,37 @@
+name: Python package
+
+on:
+  push:
+    tags:        
+      - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+
+    - name: Build template
+      run: python3 generate-templates.py
+
+    - name: Move files to publish directory
+        run: |
+          mkdir -p publish
+          mv templates_v2.json ./publish/
+    
+    - name: Release and upload assets
+      uses: softprops/action-gh-release@v1
+      with:
+        name: ${{ env.RELEASE_NAME }}
+        tag_name: ${{ env.TAG_NAME }}
+        draft: false
+        prerelease: false
+        files: |
+          ./publish/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
