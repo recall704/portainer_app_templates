@@ -17,5 +17,5 @@ if __name__ == '__main__':
     d["templates"] = templates
 
     with open("templates_v2.json", "w") as f:
-        json.dump(d, f, indent=2)
+        json.dump(d, f, indent=2, sort_keys=True)
         f.write("\n")
