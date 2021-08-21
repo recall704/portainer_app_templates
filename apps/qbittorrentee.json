@@ -1,0 +1,45 @@
+{
+    "categories": [
+        "Downloaders"
+    ],
+    "description": "https://github.com/SuperNG6/Docker-qBittorrent-Enhanced-Edition",
+    "env": [
+        {
+            "default": "1026",
+            "label": "PUID",
+            "name": "PUID"
+        },
+        {
+            "default": "100",
+            "label": "PGID",
+            "name": "PGID"
+        },
+        {
+            "name": "TZ",
+            "label": "TZ",
+            "default": "Asia/Shanghai"
+        }
+    ],
+    "image": "superng6/qbittorrentee:latest",
+    "logo": "https://raw.githubusercontent.com/recall704/portainer_app_templates/main/images/qbittorrent-icon.png",
+    "name": "qbittorrentee",
+    "platform": "linux",
+    "ports": [
+        "6881:6881/tcp",
+        "6881:6881/udp",
+        "8080:8080/tcp"
+    ],
+    "restart_policy": "always",
+    "title": "qBittorrent",
+    "type": 1,
+    "volumes": [
+        {
+            "bind": "/portainer/Files/AppData/Config/qBittorrent",
+            "container": "/config"
+        },
+        {
+            "bind": "/portainer/Downloads",
+            "container": "/downloads"
+        }
+    ]
+}
