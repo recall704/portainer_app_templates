@@ -1,49 +1,60 @@
-name: Python package
+name: Portainer Templates Actions
 
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    tags:        
-      - v*
+    branches: [main]
+    paths-ignore:
+      - "**/README.md"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "**/README.md"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - name: Set variables
+        run: |
+          echo "PUBLISH_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        shell: bash
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.7'
+      - uses: actions/checkout@v2
 
-    - name: Build template
-      run: python3 generate-templates.py
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
 
-    - name: Move files to publish directory
-      run: |
-        mkdir -p publish
-        mv templates_v2.json ./publish/
-    
-    - name: Release and upload assets
-      uses: softprops/action-gh-release@v1
-      with:
-        name: ${{ env.RELEASE_NAME }}
-        tag_name: ${{ env.TAG_NAME }}
-        draft: false
-        prerelease: false
-        files: |
-          ./publish/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build template
+        run: python3 generate-templates.py
 
-    - name: Git push assets to "release" branch
-      run: |
-        cd publish
-        git init
-        git config --local user.name "github-actions[bot]"
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git checkout -b release
-        git add .
-        git commit -m "update release file - ${{ env.RELEASE_NAME }}"
-        git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-        git push -f origin release
+      - name: Move files to publish directory
+        run: |
+          mkdir -p publish
+          mv templates_v2.json ./publish/
+
+      - name: Release and upload assets
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ env.TAG_NAME }}
+          draft: false
+          prerelease: false
+          files: |
+            ./publish/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Git push assets to "release" branch
+        run: |
+          cd publish
+          git init
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b release
+          git add .
+          git commit -m "update release file - ${{ env.RELEASE_NAME }}"
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git push -f origin release
